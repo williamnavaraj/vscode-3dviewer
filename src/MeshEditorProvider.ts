@@ -312,3 +312,4 @@ export class MeshEditorProvider implements vscode.CustomReadonlyEditorProvider<M
         }
     }
 }
+
