@@ -7,12 +7,12 @@
     "license": "LICENSE.md",
     "icon": "icon.png",
     "bugs": {
-        "url": "https://github.com/stef-levesque/vscode-3dviewer/issues"
+        "url": "https://github.com/williamnavaraj/vscode-3dviewer-editor/issues"
     },
-    "homepage": "https://github.com/stef-levesque/vscode-3dviewer",
+    "homepage": "https://github.com/williamnavaraj/vscode-3dviewer-editor",
     "repository": {
         "type": "git",
-        "url": "https://github.com/stef-levesque/vscode-3dviewer.git"
+        "url": "https://github.com/williamnavaraj/vscode-3dviewer-editor.git"
     },
     "galleryBanner": {
         "color": "#0075c3",
