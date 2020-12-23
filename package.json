@@ -1,9 +1,9 @@
 {
     "name": "vscode-3dviewer-and-editor",
     "displayName": "3D Viewer and editor for VSCode",
-    "description": "Preview 3D models in VSCode",
-    "version": "0.3.2",
-    "publisher": "William (Forked from Stef-Levesque)",
+    "description": "Preview 3D models in VSCode. Translate, scale, rotate, amend and convert file types, (Forked from Stef-Levesque)",
+    "version": "0.2.3",
+    "publisher": "William",
     "license": "LICENSE.md",
     "icon": "icon.png",
     "bugs": {
