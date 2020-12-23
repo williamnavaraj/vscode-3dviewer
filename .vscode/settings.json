@@ -5,5 +5,9 @@
     },
     "search.exclude": {
         "out": true // set this to false to include "out" folder in search results
-    }
+    },
+    "python.autoComplete.extraPaths": [
+        "/home/egi3navarw/Projects/TeleOp/nextage/nextage_ws/devel/lib/python2.7/dist-packages",
+        "/opt/ros/kinetic/lib/python2.7/dist-packages"
+    ]
 }

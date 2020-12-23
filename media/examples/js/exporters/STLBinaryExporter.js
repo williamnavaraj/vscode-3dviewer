@@ -20,6 +20,7 @@ THREE.STLBinaryExporter.prototype = {
 			// We collect objects first, as we may need to convert from BufferGeometry to Geometry
 			var objects = [];
 			var triangles = 0;
+
 			scene.traverse( function ( object ) {
 
 				if ( ! ( object instanceof THREE.Mesh ) ) return;
@@ -84,8 +85,72 @@ THREE.STLBinaryExporter.prototype = {
 				}
 
 			} );
+			
+			var output1=new Uint8Array( arrayBuffer);//,0,4 );
+			//var output4=ArrayBufferToString(arrayBuffer);
+			//alert(output3.byteLength);
+			return output1;
 
-			return output;
+			function ArrayBufferToString(buffer) {
+				alert(buffer);
+				return BinaryToString(String.fromCharCode.apply(null, Array.prototype.slice.apply(new Uint8Array(buffer))));
+			}
+			
+			function StringToArrayBuffer(string) {
+				return StringToUint8Array(string).buffer;
+			}
+			function BinaryToString(binary) {
+				var error;
+				alert(binary);
+				try {
+					return decodeURIComponent(escape(binary));
+				} catch (_error) {
+					error = _error;
+					if (error instanceof URIError) {
+						return binary;
+					} else {
+						alert(error);
+						throw error;
+					}
+				}
+			}
+			
+			function StringToBinary(string) {
+				var chars, code, i, isUCS2, len, _i;
+			
+				len = string.length;
+				chars = [];
+				isUCS2 = false;
+				for (i = _i = 0; 0 <= len ? _i < len : _i > len; i = 0 <= len ? ++_i : --_i) {
+					code = String.prototype.charCodeAt.call(string, i);
+					if (code > 255) {
+						isUCS2 = true;
+						chars = null;
+						break;
+					} else {
+						chars.push(code);
+					}
+				}
+				if (isUCS2 === true) {
+					return unescape(encodeURIComponent(string));
+				} else {
+					return String.fromCharCode.apply(null, Array.prototype.slice.apply(chars));
+				}
+			}
+			
+			function StringToUint8Array(string) {
+				var binary, binLen, buffer, chars, i, _i;
+				binary = StringToBinary(string);
+				binLen = binary.length;
+				buffer = new ArrayBuffer(binLen);
+				chars  = new Uint8Array(buffer);
+				for (i = _i = 0; 0 <= binLen ? _i < binLen : _i > binLen; i = 0 <= binLen ? ++_i : --_i) {
+					chars[i] = String.prototype.charCodeAt.call(binary, i);
+				}
+				return chars;
+			}
+
+
 
 		};
 

@@ -126,6 +126,7 @@ export class MeshEditorProvider implements vscode.CustomReadonlyEditorProvider<M
             this.getMediaPath(scheme, 'examples/js/exporters/OBJExporter.js'),
             this.getMediaPath(scheme, 'examples/js/exporters/GLTFExporter.js'),
             this.getMediaPath(scheme, 'examples/js/exporters/STLExporter.js'),
+            this.getMediaPath(scheme, 'examples/js/exporters/STLBinaryExporter.js'),
             this.getMediaPath(scheme, 'examples/js/renderers/Projector.js'),
             this.getMediaPath(scheme, 'examples/js/renderers/CanvasRenderer.js'),
             this.getMediaPath(scheme, 'examples/js/renderers/RaytracingRenderer.js'),
@@ -307,7 +308,47 @@ export class MeshEditorProvider implements vscode.CustomReadonlyEditorProvider<M
                 const documentPath = document.uri.fsPath;
                 const savePath = documentPath.substring(0, documentPath.lastIndexOf('.') + 1) + message.extension;
 
-                vscode.workspace.fs.writeFile(vscode.Uri.file(savePath), Buffer.from(message.text));
+                vscode.window.showSaveDialog({defaultUri:vscode.Uri.file(savePath),filters:{'ASCII 3D Files': [message.extension]}}).then(res=>{
+                    if(res==undefined)
+                    {
+                        vscode.workspace.fs.writeFile(vscode.Uri.file(savePath), Buffer.from(message.text));
+                    }
+                    else
+                    {
+                        vscode.workspace.fs.writeFile(res, Buffer.from(message.text));
+                    }
+
+                })
+
+
+                //vscode.workspace.fs.writeFile(vscode.Uri.file(savePath), Buffer.from(message.text));
+                return;
+            case 'saveBinaryFile':
+                const writeStr = '1€ is 1.12$ is 0.9£kjkj';
+                const writeData = new Uint8Array(Object.keys(message.output).length);
+                for (let i = 0; i < writeData.length; i++) {
+                    writeData[i]=message.output[i];
+                  }
+                //const writeData2 = message.output;
+                const a=(typeof writeData);
+                //const b=(writeData2[0]);
+                //const c=();
+                const documentPath1 = document.uri.fsPath;
+                const savePath1 = documentPath1.substring(0, documentPath1.lastIndexOf('.') + 1) + message.extension;
+                vscode.window.showSaveDialog({defaultUri:vscode.Uri.file(savePath1),filters:{'STL': ['stl']}}).then(res=>{
+                    if(res==undefined)
+                    {
+                        vscode.workspace.fs.writeFile(vscode.Uri.file(savePath1), writeData);
+                    }
+                    else
+                    {
+                        vscode.workspace.fs.writeFile(res, writeData);
+                    }
+
+                })
+
+                 //vscode.workspace.fs.writeFile(vscode.Uri.file(savePath1), writeData);
+                
                 return;
         }
     }

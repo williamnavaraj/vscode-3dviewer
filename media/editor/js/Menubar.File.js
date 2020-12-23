@@ -1,7 +1,7 @@
 /**
  * @author mrdoob / http://mrdoob.com/
  */
-
+//import { saveAs } from 'file-saver';
 Menubar.File = function ( editor ) {
 
 	var NUMBER_PRECISION = 6;
@@ -226,11 +226,11 @@ Menubar.File = function ( editor ) {
 	} );
 	options.add( option );
 
-	// Export STL
+	// Export ASCII STL
 
 	var option = new UI.Row();
 	option.setClass( 'option' );
-	option.setTextContent( 'Export STL' );
+	option.setTextContent( 'Export ASCII STL' );
 	option.onClick( function () {
 
 		var exporter = new THREE.STLExporter();
@@ -240,9 +240,26 @@ Menubar.File = function ( editor ) {
 	} );
 	options.add( option );
 
+
+	// Export Binary STL
+
+	var option = new UI.Row();
+	option.setClass( 'option' );
+	option.setTextContent( 'Export Binary STL' );
+	option.onClick( function () {
+
+		var exporter = new THREE.STLBinaryExporter();
+		var output=exporter.parse( editor.scene );
+		//alert(output.byteLength);
+		saveBinary(output,'stl');
+		
+	} );
+	options.add( option );
+
 	//
 
 	options.add( new UI.HorizontalRule() );
+
 
 	// Publish
 
@@ -371,10 +388,33 @@ Menubar.File = function ( editor ) {
 		// URL.revokeObjectURL( url ); breaks Firefox...
 
 	}
+	function saveString(text,extension){
 
-	function saveString( text, extension ) {
-        vscode.postMessage({ type: 'saveFile', text, extension })
+       vscode.postMessage({ type: 'saveFile', text, extension });
 	}
+	function saveBinary( output, extension ) 
+{
+	vscode.postMessage({ type: 'saveBinaryFile', output, extension });
+}
+
+	// Function to download data to a file
+function download(data, filename, type) {
+    var file = new Blob([data], {type: type});
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+        var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);  
+        }, 0); 
+    }
+}
 
 	return container;
 
